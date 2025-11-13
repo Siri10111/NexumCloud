@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { supabase } from '@/lib/supabase'
 
 export default function Reset() {
   const [pw, setPw] = useState(''); const [msg, setMsg] = useState<string|null>(null)

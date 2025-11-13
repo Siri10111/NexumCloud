@@ -1,10 +1,10 @@
 'use client'
-import { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase'
+import { useState, useEffect } from 'react'
+import { supabase } from '@/lib/supabase'
 
 export default function AuthPage() {
   const [mode, setMode] = useState<'signin'|'signup'>('signin')
-  const [email, setEmail] = useState(''); const [pw, setPw] = useState(''); const [confirm, setConfirm] = useState('')
+  const [email, setEmail] = useState(''), [pw, setPw] = useState(''), [confirm, setConfirm] = useState('')
   const [err, setErr] = useState<string|null>(null)
 
   useEffect(() => {
@@ -28,23 +28,14 @@ export default function AuthPage() {
     <main style={{display:'grid',placeItems:'center',minHeight:'70dvh'}}>
       <div style={{width:340,padding:16,border:'1px solid #ddd',borderRadius:12}}>
         <h2>{mode==='signin'?'Sign in':'Create account'}</h2>
-        <input placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} style={{width:'100%',margin:'8px 0',padding:8}}/>
-        <input placeholder="Password" type="password" value={pw} onChange={e=>setPw(e.target.value)} style={{width:'100%',margin:'8px 0',padding:8}}/>
-        {mode==='signup' && (
-          <input placeholder="Confirm password" type="password" value={confirm} onChange={e=>setConfirm(e.target.value)} style={{width:'100%',margin:'8px 0',padding:8}}/>
-        )}
+        <input placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} />
+        <input placeholder="Password" type="password" value={pw} onChange={e=>setPw(e.target.value)} />
+        {mode==='signup' && <input placeholder="Confirm" type="password" value={confirm} onChange={e=>setConfirm(e.target.value)} />}
         {err && <p style={{color:'#d33'}}>{err}</p>}
-        {mode==='signin' ? (
-          <>
-            <button onClick={signIn}>Sign in</button>
-            <p style={{opacity:.8,marginTop:8}}>New? <a onClick={()=>setMode('signup')} style={{textDecoration:'underline',cursor:'pointer'}}>Create an account</a></p>
-          </>
-        ) : (
-          <>
-            <button disabled={pw.length<8 || pw!==confirm} onClick={signUp}>Sign up</button>
-            <p style={{opacity:.8,marginTop:8}}>Have an account? <a onClick={()=>setMode('signin')} style={{textDecoration:'underline',cursor:'pointer'}}>Sign in</a></p>
-          </>
-        )}
+        {mode==='signin'
+          ? (<><button onClick={signIn}>Sign in</button><p>New? <a onClick={()=>setMode('signup')}>Create an account</a></p></>)
+          : (<><button disabled={pw.length<8||pw!==confirm} onClick={signUp}>Sign up</button><p>Have an account? <a onClick={()=>setMode('signin')}>Sign in</a></p></>)
+        }
       </div>
     </main>
   )
